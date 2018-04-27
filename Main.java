@@ -14,6 +14,7 @@ public class Main {
         addComponentsToPane(frame.getContentPane());
  
         //Display the window.
+        frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

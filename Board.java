@@ -20,4 +20,8 @@ public class Board extends JPanel {
             }
         }
     }
+
+    public Tile[][] getBoardTiles() {
+        return this.boardTiles;
+    }
 }

@@ -1,6 +1,5 @@
 import java.awt.image.BufferedImage;
 import java.awt.Color;
-import java.awt.Insets;
 import java.awt.event.ActionEvent; 
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,10 +12,12 @@ public class Tile extends JButton implements ActionListener {
     private char token; // Possible values: X, O, or Constants.EMPTY
 
     public Tile() {
+        // Initialize button properties
         this.setBackground(Color.WHITE);
         this.setFocusable(false);        
-        this.token = Constants.EMPTY;
         this.addActionListener(this);
+        // Initialize Tile attribute/s
+        this.token = Constants.EMPTY;
     }
 
     @Override
@@ -37,8 +38,13 @@ public class Tile extends JButton implements ActionListener {
                     e2.printStackTrace();
                 }
             }
+            Game.checkWin();
             Game.reverseTurn();
         }
+    }
+
+    public char getToken() {
+        return this.token;
     }
 
 }
