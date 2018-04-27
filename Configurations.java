@@ -1,4 +1,7 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,6 +20,8 @@ public class Configurations extends JPanel {
     private static JButton SELECT_FIRST;
     private static JButton SELECT_SECOND;
     private static JButton START_BUTTON;
+    private static JButton SELECTED_TOKEN = null;
+    private static JButton SELECTED_TURN = null;
 
     public Configurations() {
         this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE));
@@ -76,8 +81,81 @@ public class Configurations extends JPanel {
         START_BUTTON.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainCard.startGame();
+                // To pass: PlayerToken, PlayerTurn
+                if(SELECTED_TOKEN == null || SELECTED_TURN == null) {
+                    return;
+                } 
+                char playerToken;
+                int playerTurn; // Possible value: 1 or 2
+                if(SELECTED_TOKEN == SELECT_X) {
+                    playerToken = 'X';
+                } else {
+                    playerToken = 'O';
+                }
+                if(SELECTED_TURN == SELECT_FIRST) {
+                    playerTurn = 1;
+                } else {
+                    playerTurn = 2;
+                }
+                MainCard.startGame(playerToken, playerTurn);
             }
         });
+
+        SELECT_X.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SELECTED_TOKEN = (JButton) e.getSource();
+                repaint();
+            }
+        });
+
+        SELECT_O.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SELECTED_TOKEN = (JButton) e.getSource();
+                repaint();
+            }
+        });
+
+        SELECT_FIRST.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SELECTED_TURN = (JButton) e.getSource();
+                repaint();
+            }
+        });
+
+        SELECT_SECOND.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SELECTED_TURN = (JButton) e.getSource();
+                repaint();
+            
+            }
+        });
+    }
+
+    // TODO: create a class for these buttons
+    
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // TOKEN
+        if(SELECTED_TOKEN == SELECT_X) {
+            SELECT_X.setBackground(new Color(144, 238, 144));
+            SELECT_O.setBackground(null);
+        } else if(SELECTED_TOKEN == SELECT_O){
+            SELECT_O.setBackground(new Color(144, 238, 144));
+            SELECT_X.setBackground(null);
+        }
+        // TURN
+        if(SELECTED_TURN == SELECT_FIRST) {
+            SELECT_FIRST.setBackground(new Color(144, 238, 144));
+            SELECT_SECOND.setBackground(null);
+        } else if(SELECTED_TURN == SELECT_SECOND){
+            SELECT_SECOND.setBackground(new Color(144, 238, 144));
+            SELECT_FIRST.setBackground(null);
+        }
     }
 }

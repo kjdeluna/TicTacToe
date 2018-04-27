@@ -7,9 +7,16 @@ public class Game extends JPanel {
     
     private static Options OPTIONS;
     private static Board BOARD; // (See Board.java)
-    public static char TURN = 'X'; // Whose turn it is
+    public static char TURN; // Whose turn it is
+    public static char PLAYER;
                     // Possible values: X, O
-    public Game() {
+    public Game(char playerToken, int playerTurn) {
+        PLAYER = playerToken;
+        if(playerTurn == 1) {
+            TURN = playerToken;
+        } else {
+            TURN = invert(playerToken);
+        }
         OPTIONS = new Options();
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE + 32));
@@ -17,6 +24,14 @@ public class Game extends JPanel {
         // Occupy the whole center screen
         this.add(OPTIONS, BorderLayout.NORTH);
         this.add(BOARD, BorderLayout.CENTER);
+    }
+
+    public static char invert(char playerToken) {
+        if(playerToken == 'X') {
+            return 'O';
+        } else {
+            return 'X';
+        }
     }
 
     public static void reverseTurn() {
