@@ -1,6 +1,6 @@
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
-
 public class Board extends JPanel {
 
     // A 2D-Array of Tile (See Tile.java)
@@ -9,6 +9,7 @@ public class Board extends JPanel {
 
     public Board(){
         // Initialize properties of the board
+        this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE));
         this.setLayout(new GridLayout(Constants.ROWS, Constants.COLUMNS));
         this.boardTiles = new Tile[Constants.ROWS][Constants.COLUMNS];
         // Instantiate tiles within the boardTiles
