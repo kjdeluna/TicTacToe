@@ -74,6 +74,7 @@ public class Game extends JPanel {
         if(continuous) return true;
         return false;
     }
+    
     private static boolean checkHorizontal() {
         /*
             HORIZONTAL:

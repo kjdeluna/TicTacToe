@@ -21,7 +21,7 @@ public class Main {
     }
 
     private static void addComponentsToPane(Container pane) {
-        pane.add(new Game());
+        pane.add(new Menu());
     }
 
     public static void main(String[] args){
