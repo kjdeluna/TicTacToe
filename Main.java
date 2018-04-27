@@ -21,7 +21,7 @@ public class Main {
     }
 
     private static void addComponentsToPane(Container pane) {
-        pane.add(new Menu());
+        pane.add(new MainCard());
     }
 
     public static void main(String[] args){

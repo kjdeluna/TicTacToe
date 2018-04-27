@@ -14,7 +14,7 @@ public class Options extends JPanel {
         BACK_BUTTON.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                Menu.goBackToMenu();
+                MainCard.goBackToMenu();
             }
         });
     }
