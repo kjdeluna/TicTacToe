@@ -10,6 +10,7 @@ public class Menu extends JPanel {
     private static JPanel CARD_HOLDER = new JPanel(new CardLayout());
     private static JButton START_BUTTON;
     private static JPanel MENU_CARD;
+    private static Game RECENT_GAME;
     public Menu() {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE));
@@ -26,8 +27,9 @@ public class Menu extends JPanel {
         START_BUTTON.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                Game game = new Game();
-                CARD_HOLDER.add(game, "GAME");
+                if(RECENT_GAME != null) CARD_HOLDER.remove(RECENT_GAME);
+                RECENT_GAME = new Game();
+                CARD_HOLDER.add(RECENT_GAME, "GAME");
                 CardLayout c = (CardLayout) CARD_HOLDER.getLayout();
                 c.show(CARD_HOLDER, "GAME");
                 
@@ -38,6 +40,11 @@ public class Menu extends JPanel {
         c.show(CARD_HOLDER, "MENU");
         this.add(CARD_HOLDER, BorderLayout.CENTER);
         
+    }
+
+    public static void goBackToMenu() {
+        CardLayout c = (CardLayout) CARD_HOLDER.getLayout();
+        c.show(CARD_HOLDER, "MENU");
     }
 
 }

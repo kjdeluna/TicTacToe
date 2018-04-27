@@ -5,14 +5,17 @@ import javax.swing.JPanel;
 /* This class contains the actual logic of the game */
 public class Game extends JPanel {
     
+    private static Options OPTIONS;
     private static Board BOARD; // (See Board.java)
     public static char TURN = 'X'; // Whose turn it is
                     // Possible values: X, O
     public Game() {
+        OPTIONS = new Options();
         this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE));
+        this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE + 32));
         BOARD = new Board();
         // Occupy the whole center screen
+        this.add(OPTIONS, BorderLayout.NORTH);
         this.add(BOARD, BorderLayout.CENTER);
     }
 
@@ -74,7 +77,7 @@ public class Game extends JPanel {
         if(continuous) return true;
         return false;
     }
-    
+
     private static boolean checkHorizontal() {
         /*
             HORIZONTAL:
