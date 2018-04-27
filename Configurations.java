@@ -1,6 +1,9 @@
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -24,8 +27,8 @@ public class Configurations extends JPanel {
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 0;
-        c.ipadx = Constants.WIDTH / 2;
-        c.ipady = Constants.HEIGHT * 2 / 3;
+        // c.ipadx = Constants.WIDTH / 2;
+        // c.ipady = Constants.HEIGHT * 2 / 3;
         // Instantiate Button
         SELECT_X = new JButton();
         SELECT_X.setFocusable(false);
@@ -49,6 +52,7 @@ public class Configurations extends JPanel {
 
         c.gridx = 0;
         c.gridy = 1;
+        c.insets = new Insets(20, 0, 0, 0);
         SELECT_FIRST = new JButton("First turn");
         SELECT_FIRST.setFocusable(false);
         this.add(SELECT_FIRST, c);
@@ -61,9 +65,19 @@ public class Configurations extends JPanel {
 
         c.gridx = 0;
         c.gridy = 2;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.CENTER;
+        // c.ipady = 100;
         START_BUTTON = new JButton("Start");
         START_BUTTON.setFocusable(false);
         this.add(START_BUTTON, c);
 
+        START_BUTTON.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainCard.startGame();
+            }
+        });
     }
 }

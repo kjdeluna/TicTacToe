@@ -39,4 +39,11 @@ public final class MainCard extends JPanel {
         c.show(CARD_HOLDER, "CONFIGURATIONS");
     }
 
+    public static void startGame() {
+        if(RECENT_GAME != null) CARD_HOLDER.remove(MainCard.RECENT_GAME);
+        RECENT_GAME = new Game();
+        CARD_HOLDER.add(RECENT_GAME, "GAME");
+        CardLayout c = (CardLayout) CARD_HOLDER.getLayout();
+        c.show(CARD_HOLDER, "GAME");
+    }
 }
