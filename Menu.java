@@ -25,11 +25,6 @@ public class Menu extends JPanel {
             public void actionPerformed(ActionEvent e){
                 // Show Configurations Card
                 MainCard.showConfigurations();
-                // if(MainCard.RECENT_GAME != null) MainCard.CARD_HOLDER.remove(MainCard.RECENT_GAME);
-                // MainCard.RECENT_GAME = new Game();
-                // MainCard.CARD_HOLDER.add(MainCard.RECENT_GAME, "GAME");
-                // CardLayout c = (CardLayout) MainCard.CARD_HOLDER.getLayout();
-                // c.show(MainCard.CARD_HOLDER, "GAME");
                 
             }
         });

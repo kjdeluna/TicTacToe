@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.lang.StringBuilder;
 import javax.swing.JPanel;
 public class Board extends JPanel {
 
@@ -24,4 +25,16 @@ public class Board extends JPanel {
     public Tile[][] getBoardTiles() {
         return this.boardTiles;
     }
+
+    public String getBoardStringRep() {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < Constants.ROWS; i++) {
+            for(int j = 0; j < Constants.COLUMNS; j++) {
+                sb.append(boardTiles[i][j].getToken());
+            }
+        }
+        System.out.println(sb.toString());
+        return sb.toString();
+    }
+    
 }

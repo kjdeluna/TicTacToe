@@ -43,6 +43,7 @@ public class Game extends JPanel {
     }
 
     public static void checkWin() {
+        BOARD.getBoardStringRep();
         if(checkHorizontal()) JOptionPane.showMessageDialog(null, "You win - Horizontal");
         else if(checkVertical()) JOptionPane.showMessageDialog(null, "You win - Vertical");
         else if(checkDiagonal()) JOptionPane.showMessageDialog(null, "You win - Diagonal");
