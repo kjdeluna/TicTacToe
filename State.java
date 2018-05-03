@@ -1,10 +1,23 @@
 public class State {
     private Board currentBoard;
-    public State(Board board) {
+    private int value;
+    private char turn;
+    public State(Board board, char turn) {
         this.currentBoard = board;
+        this.value = Constants.NON_EXISTING_VALUE;
+        this.turn = turn;
     }
     public Board getBoard() {
         return this.currentBoard;
+    }
+    public int getValue() {
+        return this.value;
+    }
+    public char getTurn() {
+        return this.turn;
+    }
+    public void setTurn(char turn) {
+        this.turn = turn;
     }
     private boolean checkDiagonal() {
         /*

@@ -7,29 +7,31 @@ public class Game extends JPanel {
     public static String STATUS = "~";
     private static Options OPTIONS;
     private static Board BOARD; // (See Board.java)
-    public static char TURN; // Whose turn it is
     public static char PLAYER;
     public static State currentState;
                     // Possible values: X, O
     public static AISolver aiSolver;
     public Game(char playerToken, int playerTurn) {
+        char _TURN; // temporary variable
         PLAYER = playerToken;
         aiSolver = new AISolver(invert(playerToken));
         if(playerTurn == 1) {
-            TURN = playerToken;
+            _TURN = playerToken;
         } else {
-            TURN = invert(playerToken);
+            _TURN = invert(playerToken);
         }
         OPTIONS = new Options();
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE + 32));
         BOARD = new Board();
-        this.currentState = new State(BOARD);
+        this.currentState = new State(BOARD, _TURN);
         // Occupy the whole center screen
         this.add(OPTIONS, BorderLayout.NORTH);
         this.add(BOARD, BorderLayout.CENTER);
     }
-
+    public static State getCurrentState() {
+        return currentState;
+    }
     public static char invert(char playerToken) {
         if(playerToken == 'X') {
             return 'O';
@@ -39,10 +41,10 @@ public class Game extends JPanel {
     }
 
     public static void reverseTurn() {
-        if(TURN == 'X') {
-            TURN = 'O';
-        } else if(TURN  == 'O') {
-            TURN = 'X';
+        if(currentState.getTurn() == 'X') {
+            currentState.setTurn('O');
+        } else if(currentState.getTurn()  == 'O') {
+            currentState.setTurn('X');
         }
     }
     public static void stop() {

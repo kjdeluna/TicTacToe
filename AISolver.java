@@ -21,8 +21,10 @@ public class AISolver {
     }
     
     public State Result(State s, int action) {
-        State newState = new State(Clone.cloneBoard(s.getBoard()));
-        newState.getBoard().getBoardTiles()[action/Constants.ROWS][action%Constants.COLUMNS].setToken(Game.TURN);
+        // A result of another function will invert the turn
+        State newState = new State(Clone.cloneBoard(s.getBoard()), Game.invert(s.getTurn()));
+        // 
+        newState.getBoard().getBoardTiles()[action/Constants.ROWS][action%Constants.COLUMNS].setToken(s.getTurn());
         return newState;
     }
 
@@ -53,7 +55,7 @@ public class AISolver {
     }
 
     public int value(State s) {
-        // TODO:
+
         return 0;
     }
 

@@ -24,7 +24,7 @@ public class Tile extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(!Game.STATUS.equals("DONE")){
             if(this.token == Constants.EMPTY) {
-                if(Game.TURN == 'X') {
+                if(Game.getCurrentState().getTurn() == 'X') {
                     this.token = 'X';
                     try{
                         this.setIcon(new ImageIcon(ImageIO.read(new File(Constants.IMAGE_PATH + Constants.X_ICON))));

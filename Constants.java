@@ -13,4 +13,5 @@ public abstract class Constants{
     public static final char EMPTY = '_';
     public static final int POSITIVE_INFINITY = Integer.MAX_VALUE;
     public static final int NEGATIVE_INFINITY = Integer.MIN_VALUE;
+    public static final int NON_EXISTING_VALUE = -1;
 }
