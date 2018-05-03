@@ -57,7 +57,6 @@ public class AISolver {
     public int max(int v, int m, int level, State s) {
         if(v > m){
             if(level == 1){
-                System.out.println("Updated stateToBeTaken");
                 this.stateToBeTaken = s;
             }
             return v;
@@ -68,7 +67,6 @@ public class AISolver {
     public int min(int v, int m, int level, State s) {
         if(v < m){
             if(level == 1){
-                System.out.println("Updated stateToBeTaken");
                 this.stateToBeTaken = s;
             }
             return v;
@@ -92,8 +90,6 @@ public class AISolver {
     public int utility(State s) {
         System.out.println("UTILITY");
         s.checkWin();
-        System.out.println("Winner: " + s.getWinner());
-        System.out.println(s.getBoardStringRepresentation());
         // AI wins
         if(s.getWinner() == token){
             System.out.println("UTILITY RETURNED: 1");
