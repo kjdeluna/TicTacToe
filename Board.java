@@ -20,6 +20,7 @@ public class Board extends JPanel {
                 this.add(this.boardTiles[i][j]);
             }
         }
+
     }
 
     public Tile[][] getBoardTiles() {
@@ -46,5 +47,15 @@ public class Board extends JPanel {
 
     public void setBoardTiles(Tile[][] boardTiles) {
         this.boardTiles = boardTiles;
+    }
+
+    public boolean checkIfFull() {
+        char[][] table = this.getBoardCharacters();
+        for(int i = 0; i < Constants.ROWS; ++i){
+            for(int j = 0; j < Constants.COLUMNS; ++j){
+                if(table[i][j] == '_') return false;
+            }   
+        }
+        return true;
     }
 }

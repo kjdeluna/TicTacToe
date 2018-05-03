@@ -57,7 +57,7 @@ public class State {
             }
         }
         if(continuous) {
-            this.winner = turn;
+            this.winner = first;
            return true;
         }
         continuous = true;
@@ -75,7 +75,7 @@ public class State {
             }
         }
         if(continuous) {
-            this.winner = turn;
+            this.winner = first;
             return true;
         }
         return false;
@@ -104,7 +104,7 @@ public class State {
                 }
             }
             if(continuous) {
-                this.winner = turn;
+                this.winner = first;
                 return true;
             }
         }
@@ -143,7 +143,7 @@ public class State {
                 }
             }
             if(continuous) {
-                this.winner = turn;
+                this.winner = first;
                 return true;
             }
         }
@@ -173,5 +173,13 @@ public class State {
             }
         }
         return sb.toString();
+    }
+
+    public void reverseToken(){
+        this.turn = Game.invert(this.turn);
+    }
+
+    public int getRecentAction(){
+        return this.recentAction;
     }
 }

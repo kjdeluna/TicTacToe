@@ -9,11 +9,13 @@ public class Game extends JPanel {
     private static Board BOARD; // (See Board.java)
     public static char PLAYER;
     public static State currentState;
+    public static int playerTurn;
                     // Possible values: X, O
     public static AISolver aiSolver;
     public Game(char playerToken, int playerTurn) {
         char _TURN; // temporary variable
         PLAYER = playerToken;
+        this.playerTurn = playerTurn;
         aiSolver = new AISolver(invert(playerToken));
         if(playerTurn == 1) {
             _TURN = playerToken;
@@ -28,6 +30,17 @@ public class Game extends JPanel {
         // Occupy the whole center screen
         this.add(OPTIONS, BorderLayout.NORTH);
         this.add(BOARD, BorderLayout.CENTER);
+
+        if(playerTurn == 2){
+            if(!currentState.getBoard().checkIfFull()){
+                currentState.getBoard().getBoardTiles()[1][1].aiAction(currentState.getTurn());
+            }
+            if(currentState.getTurn() == 'X') {
+                currentState.setTurn('O');
+            } else if(currentState.getTurn()  == 'O') {
+                currentState.setTurn('X');
+            }
+        }
     }
     public static State getCurrentState() {
         return currentState;
@@ -41,7 +54,10 @@ public class Game extends JPanel {
     }
 
     public static void reverseTurn() {
-        aiSolver.think(currentState);
+        if(!currentState.getBoard().checkIfFull()){
+            currentState.reverseToken();
+            aiSolver.think(currentState);
+        }
         if(currentState.getTurn() == 'X') {
             currentState.setTurn('O');
         } else if(currentState.getTurn()  == 'O') {
@@ -60,6 +76,7 @@ public class Game extends JPanel {
     }
     public static boolean checkWin() {
         currentState.printStatus();
+        System.out.println("checkWin: " + currentState.checkWin());
         return currentState.checkWin();
     }
 }

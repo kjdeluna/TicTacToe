@@ -2,6 +2,7 @@ import java.util.LinkedList;
 
 public class AISolver {
     private char token;
+    State stateToBeTaken;
     public AISolver(char token) {
         this.token = token;
     }
@@ -29,55 +30,85 @@ public class AISolver {
         return newState;
     }
 
-    public int maxValue(State s) {
-        System.out.println("solving4");
+    public int maxValue(State s, int level) {
+        System.out.println("MAX");
+        System.out.println("LEVEL: " + level);
         int m = Constants.NEGATIVE_INFINITY;
         for(State branchingState : successors(s)) {
-            int v = value(branchingState);
-            m = max(v, m);
+            int v = value(branchingState, level);
+            m = max(v, m, level,branchingState);
         }
+        System.out.println("MAX RETURNED: " + m);
         return m;
     }
 
-    public int minValue(State s) {
-        System.out.println("solving3");
+    public int minValue(State s, int level) {
+        System.out.println("MIN");
+        System.out.println("LEVEL: " + level);
         int m = Constants.POSITIVE_INFINITY;
         for(State branchingState : successors(s)) {
-            int v = value(branchingState);
-            m = min(v,m);
+            int v = value(branchingState, level);
+            m = min(v,m,level,branchingState);
+        }
+        System.out.println("MIN RETURNED: " + m);
+        return m;
+    }
+
+    public int max(int v, int m, int level, State s) {
+        if(v > m){
+            if(level == 1){
+                System.out.println("Updated stateToBeTaken");
+                this.stateToBeTaken = s;
+            }
+            return v;
         }
         return m;
     }
 
-    public int max(int v, int m) {
-        return (v > m ? v : m);
-    }
-
-    public int min(int v, int m) {
-        return (v < m ? v : m);
-    }
-
-    public int value(State s) {
-        System.out.println("solving");
-        System.out.println("Turn: " + s.getTurn());
-        if(s.getTurn() == token) {
-            // If it is the AI's turn
-            return maxValue(s);    
+    public int min(int v, int m, int level, State s) {
+        if(v < m){
+            if(level == 1){
+                System.out.println("Updated stateToBeTaken");
+                this.stateToBeTaken = s;
+            }
+            return v;
         }
-        else if(Actions(s).size() == 0) return utility(s);
+        return m;
+    }
+
+    public int value(State s, int level) {
+        System.out.println("VALUE");
+        System.out.println("Turn: " + s.getTurn());
+        if(Actions(s).size() == 0 || s.checkWin()) return utility(s);
+        else if(s.getTurn() == token) {
+            // If it is the AI's turn
+            return maxValue(s, level + 1);    
+        }
         else if(s.getTurn() != token) {
-            return minValue(s);
+            return minValue(s, level + 1);
         }
         return 0;
     }
     public int utility(State s) {
-        System.out.println("solving2");
+        System.out.println("UTILITY");
+        s.checkWin();
+        System.out.println("Winner: " + s.getWinner());
+        System.out.println(s.getBoardStringRepresentation());
         // AI wins
-        if(s.getWinner() == token) return 1;
+        if(s.getWinner() == token){
+            System.out.println("UTILITY RETURNED: 1");
+            return 1;
+        }
         // Player wins
-        else if(s.getWinner() == Game.invert(token)) return -1;
+        else if(s.getWinner() == Game.invert(token)){
+            System.out.println("UTILITY RETURNED: -1");
+            return -1;
+        }
         // Draw
-        else return 0;
+        else{
+            System.out.println("UTILITY RETURNED: 0");
+            return 0;
+        }
     }
 
     public LinkedList<State> successors(State s) {
@@ -91,6 +122,9 @@ public class AISolver {
     }
 
     public void think(State s) {
-        System.out.println(maxValue(s));
+        System.out.println(value(s, 0));
+        System.out.println("AI's turn: " + this.stateToBeTaken.getRecentAction());
+        s.getBoard().getBoardTiles()[this.stateToBeTaken.getRecentAction() / 3][this.stateToBeTaken.getRecentAction() % 3].aiAction(s.getTurn());
+        this.stateToBeTaken = null;
     }
 }

@@ -57,6 +57,30 @@ public class Tile extends JButton implements ActionListener {
         }
     }
 
+    public void aiAction(char turn){
+        if(!Game.STATUS.equals("DONE")){
+            if(turn == 'X') {
+                this.token = 'X';
+                try{
+                    this.setIcon(new ImageIcon(ImageIO.read(new File(Constants.IMAGE_PATH + Constants.X_ICON))));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            } else {
+                this.token = 'O';
+                try{
+                    this.setIcon(new ImageIcon(ImageIO.read(new File(Constants.IMAGE_PATH + Constants.O_ICON))));
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+            if(Game.checkWin()) {
+                // Display status 
+                Game.stop();
+            }
+        }   
+    }
+
     public char getToken() {
         return this.token;
     }
