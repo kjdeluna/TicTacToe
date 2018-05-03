@@ -18,7 +18,7 @@ public class AISolver {
                 actions.add(i);
             }
         }
-        System.out.println(actions.toString());
+        // System.out.println(actions.toString());
         return actions;
     }
     
@@ -115,9 +115,11 @@ public class AISolver {
         LinkedList<Integer> actions = Actions(s);
         LinkedList<State> children = new LinkedList<State>();
         for(int action : actions) {
-            children.add(Result(s, action));
+            State child = Result(s, action);
+            child.checkWin();
+            children.add(child);
         }
-        System.out.println(children.toString());
+        // System.out.println(children.toString());
         return children;
     }
 
