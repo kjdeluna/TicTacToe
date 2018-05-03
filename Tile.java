@@ -51,5 +51,7 @@ public class Tile extends JButton implements ActionListener {
     public char getToken() {
         return this.token;
     }
-
+    public void setToken(char token) {
+        this.token = token;
+    }
 }

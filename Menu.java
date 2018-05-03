@@ -25,7 +25,6 @@ public class Menu extends JPanel {
             public void actionPerformed(ActionEvent e){
                 // Show Configurations Card
                 MainCard.showConfigurations();
-                
             }
         });
 

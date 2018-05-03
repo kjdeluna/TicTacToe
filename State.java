@@ -3,6 +3,9 @@ public class State {
     public State(Board board) {
         this.currentBoard = board;
     }
+    public Board getBoard() {
+        return this.currentBoard;
+    }
     private boolean checkDiagonal() {
         /*
             DIAGONAL:
@@ -124,5 +127,14 @@ public class State {
         }
         System.out.println("");
     }
-
+    public String getBoardStringRepresentation() {
+        StringBuilder sb = new StringBuilder();
+        Tile[][] boardTiles = currentBoard.getBoardTiles();
+        for(int i = 0; i < Constants.ROWS; i++) {
+            for(int j = 0; j < Constants.COLUMNS; j++) {
+                sb.append(boardTiles[i][j].getToken());
+            }
+        }
+        return sb.toString();
+    }
 }
