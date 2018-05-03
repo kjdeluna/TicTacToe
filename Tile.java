@@ -20,6 +20,15 @@ public class Tile extends JButton implements ActionListener {
         this.token = Constants.EMPTY;
     }
 
+    public Tile(char token) {
+        // Initialize button properties
+        this.setBackground(Color.WHITE);
+        this.setFocusable(false);        
+        this.addActionListener(this);
+        // Initialize Tile attribute/s
+        this.token = token;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(!Game.STATUS.equals("DONE")){

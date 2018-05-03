@@ -41,6 +41,7 @@ public class Game extends JPanel {
     }
 
     public static void reverseTurn() {
+        aiSolver.think(currentState);
         if(currentState.getTurn() == 'X') {
             currentState.setTurn('O');
         } else if(currentState.getTurn()  == 'O') {

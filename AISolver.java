@@ -17,6 +17,7 @@ public class AISolver {
                 actions.add(i);
             }
         }
+        System.out.println(actions.toString());
         return actions;
     }
     
@@ -29,6 +30,7 @@ public class AISolver {
     }
 
     public int maxValue(State s) {
+        System.out.println("solving4");
         int m = Constants.NEGATIVE_INFINITY;
         for(State branchingState : successors(s)) {
             int v = value(branchingState);
@@ -38,6 +40,7 @@ public class AISolver {
     }
 
     public int minValue(State s) {
+        System.out.println("solving3");
         int m = Constants.POSITIVE_INFINITY;
         for(State branchingState : successors(s)) {
             int v = value(branchingState);
@@ -55,6 +58,8 @@ public class AISolver {
     }
 
     public int value(State s) {
+        System.out.println("solving");
+        System.out.println("Turn: " + s.getTurn());
         if(s.getTurn() == token) {
             // If it is the AI's turn
             return maxValue(s);    
@@ -66,8 +71,12 @@ public class AISolver {
         return 0;
     }
     public int utility(State s) {
+        System.out.println("solving2");
+        // AI wins
         if(s.getWinner() == token) return 1;
-        else if(s.getWinner() == Constants.EMPTY) return -1;
+        // Player wins
+        else if(s.getWinner() == Game.invert(token)) return -1;
+        // Draw
         else return 0;
     }
 
@@ -77,10 +86,11 @@ public class AISolver {
         for(int action : actions) {
             children.add(Result(s, action));
         }
+        System.out.println(children.toString());
         return children;
     }
 
     public void think(State s) {
-        value(s);
+        System.out.println(maxValue(s));
     }
 }
