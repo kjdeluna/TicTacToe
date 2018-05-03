@@ -2,10 +2,20 @@ public class State {
     private Board currentBoard;
     private int value;
     private char turn;
+    private char winner;
+    private int recentAction;
     public State(Board board, char turn) {
         this.currentBoard = board;
         this.value = Constants.NON_EXISTING_VALUE;
         this.turn = turn;
+        this.winner = Constants.EMPTY;
+    }
+    public State(Board board, char turn, int recentAction) {
+        this.currentBoard = board;
+        this.value = Constants.NON_EXISTING_VALUE;
+        this.turn = turn;
+        this.winner = Constants.EMPTY;
+        this.recentAction = recentAction;
     }
     public Board getBoard() {
         return this.currentBoard;
@@ -46,7 +56,10 @@ public class State {
                 break;
             }
         }
-        if(continuous) return true;
+        if(continuous) {
+            this.winner = turn;
+           return true;
+        }
         continuous = true;
         first = boardTiles[Constants.ROWS - 1][0].getToken();
         for(int i = 2, j = 0; i >= 0 && j < Constants.COLUMNS; i--, j++) {
@@ -61,10 +74,15 @@ public class State {
                 break;
             }
         }
-        if(continuous) return true;
+        if(continuous) {
+            this.winner = turn;
+            return true;
+        }
         return false;
     }
-
+    public char getWinner() {
+        return this.winner;
+    }
     private boolean checkHorizontal() {
         /*
             HORIZONTAL:
@@ -85,7 +103,10 @@ public class State {
                     break;
                 }
             }
-            if(continuous) return true;
+            if(continuous) {
+                this.winner = turn;
+                return true;
+            }
         }
         return false;
     }
@@ -121,7 +142,10 @@ public class State {
                     break;
                 }
             }
-            if(continuous) return true;
+            if(continuous) {
+                this.winner = turn;
+                return true;
+            }
         }
         return false;
     }

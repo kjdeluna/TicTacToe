@@ -22,7 +22,7 @@ public class AISolver {
     
     public State Result(State s, int action) {
         // A result of another function will invert the turn
-        State newState = new State(Clone.cloneBoard(s.getBoard()), Game.invert(s.getTurn()));
+        State newState = new State(Clone.cloneBoard(s.getBoard()), Game.invert(s.getTurn()), action);
         // 
         newState.getBoard().getBoardTiles()[action/Constants.ROWS][action%Constants.COLUMNS].setToken(s.getTurn());
         return newState;
@@ -55,11 +55,32 @@ public class AISolver {
     }
 
     public int value(State s) {
-
+        if(s.getTurn() == token) {
+            // If it is the AI's turn
+            return maxValue(s);    
+        }
+        else if(Actions(s).size() == 0) return utility(s);
+        else if(s.getTurn() != token) {
+            return minValue(s);
+        }
         return 0;
+    }
+    public int utility(State s) {
+        if(s.getWinner() == token) return 1;
+        else if(s.getWinner() == Constants.EMPTY) return -1;
+        else return 0;
     }
 
     public LinkedList<State> successors(State s) {
-        return null;
+        LinkedList<Integer> actions = Actions(s);
+        LinkedList<State> children = new LinkedList<State>();
+        for(int action : actions) {
+            children.add(Result(s, action));
+        }
+        return children;
+    }
+
+    public void think(State s) {
+        value(s);
     }
 }
