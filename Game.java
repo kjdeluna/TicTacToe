@@ -4,14 +4,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 /* This class contains the actual logic of the game */
 public class Game extends JPanel {
-    
+    public static String STATUS = "~";
     private static Options OPTIONS;
     private static Board BOARD; // (See Board.java)
     public static char TURN; // Whose turn it is
     public static char PLAYER;
+    public static State currentState;
                     // Possible values: X, O
+    public static AISolver aiSolver;
     public Game(char playerToken, int playerTurn) {
         PLAYER = playerToken;
+        aiSolver = new AISolver(invert(playerToken));
         if(playerTurn == 1) {
             TURN = playerToken;
         } else {
@@ -21,6 +24,7 @@ public class Game extends JPanel {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(Constants.WIDTH * Constants.SCALE, Constants.HEIGHT * Constants.SCALE + 32));
         BOARD = new Board();
+        this.currentState = new State(BOARD);
         // Occupy the whole center screen
         this.add(OPTIONS, BorderLayout.NORTH);
         this.add(BOARD, BorderLayout.CENTER);
@@ -41,113 +45,18 @@ public class Game extends JPanel {
             TURN = 'X';
         }
     }
-
-    public static void checkWin() {
-        BOARD.getBoardStringRep();
-        if(checkHorizontal()) JOptionPane.showMessageDialog(null, "You win - Horizontal");
-        else if(checkVertical()) JOptionPane.showMessageDialog(null, "You win - Vertical");
-        else if(checkDiagonal()) JOptionPane.showMessageDialog(null, "You win - Diagonal");
+    public static void stop() {
+        Game.STATUS = "DONE";
     }
-    private static boolean checkDiagonal() {
-        /*
-            DIAGONAL:
-                    [0][0]
-                            [1][1]
-                                    [2][2]
-                    ----------------------
-                                    [0][2]
-                            [1][1]
-                    [2][0]
-        */
-        Tile[][] boardTiles = BOARD.getBoardTiles(); 
-        boolean continuous = true;
-        // Check backslash (' \ ') diagonal
-        char first = boardTiles[0][0].getToken();
-        for(int i = 1; i < Constants.COLUMNS; i++) {
-            if(first != Constants.EMPTY) {
-                if(first != boardTiles[i][i].getToken()) {
-                    continuous = false;
-                    break;
-                }
-            } 
-            else {
-                continuous = false;
-                break;
-            }
-        }
-        if(continuous) return true;
-        continuous = true;
-        first = boardTiles[Constants.ROWS - 1][0].getToken();
-        for(int i = 2, j = 0; i >= 0 && j < Constants.COLUMNS; i--, j++) {
-            if(first != Constants.EMPTY) {
-                if(first != boardTiles[i][j].getToken()) {
-                    continuous = false;
-                    break;
-                }
-            }
-            else {
-                continuous = false;
-                break;
-            }
-        }
-        if(continuous) return true;
-        return false;
+    public static void restart() {
+        Game.STATUS = "~";
     }
-
-    private static boolean checkHorizontal() {
-        /*
-            HORIZONTAL:
-                    [0][0]  [0][1]  [0][2],
-
-                    [1][0]  [1][1]  [1][2],
-
-                    [2][0]  [2][1]  [2][2]
-        */
-        Tile[][] boardTiles = BOARD.getBoardTiles(); 
-        for(int i = 0; i < Constants.ROWS; i++) {
-            char first = boardTiles[i][0].getToken();
-            if(first == Constants.EMPTY) continue;
-            boolean continuous = true;
-            for(int j = 1; j < Constants.COLUMNS; j++) {
-                if(first != boardTiles[i][j].getToken()) {
-                    continuous = false;
-                    break;
-                }
-            }
-            if(continuous) return true;
-        }
-        return false;
+    // Insert here if (AI) -> do recursive value fxn
+    public static Board getBoard() {
+        return BOARD;
     }
-
-    private static boolean checkVertical() {
-        /*
-            VERTICAL:
-                    [0][0]
-                    [1][0]
-                    [2][0]
-                    ------
-                    [0][1]
-                    [1][1]
-                    [2][1]
-                    ------
-                    [0][2]
-                    [1][2]
-                    [2][2]
-        */
-        Tile[][] boardTiles = BOARD.getBoardTiles(); 
-        for(int i = 0; i < Constants.COLUMNS; i++) {
-            char first = boardTiles[0][i].getToken();
-            boolean continuous = true;
-            if(first == Constants.EMPTY) continue;
-            for(int j = 0; j < Constants.ROWS; j++) {
-                if(first != boardTiles[j][i].getToken()) {
-                    continuous = false;
-                    break;
-                }
-            }
-            if(continuous) return true;
-        }
-        return false;
+    public static boolean checkWin() {
+        currentState.printStatus();
+        return currentState.checkWin();
     }
-
 }

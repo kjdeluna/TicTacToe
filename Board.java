@@ -26,15 +26,25 @@ public class Board extends JPanel {
         return this.boardTiles;
     }
 
-    public String getBoardStringRep() {
-        StringBuilder sb = new StringBuilder();
+    public char[][] getBoardCharacters() {
+        char[][] table = new char[Constants.ROWS][Constants.COLUMNS];
         for(int i = 0; i < Constants.ROWS; i++) {
             for(int j = 0; j < Constants.COLUMNS; j++) {
-                sb.append(boardTiles[i][j].getToken());
+                table[i][j] = this.boardTiles[i][j].getToken();
             }
         }
-        System.out.println(sb.toString());
-        return sb.toString();
+        return table;
+        // StringBuilder sb = new StringBuilder();
+        // for(int i = 0; i < Constants.ROWS; i++) {
+        //     for(int j = 0; j < Constants.COLUMNS; j++) {
+        //         sb.append(boardTiles[i][j].getToken());
+        //     }
+        // }
+        // System.out.println(sb.toString());
+        // return sb.toString();
     }
-    
+
+    public void setBoardTiles(Tile[][] boardTiles) {
+        this.boardTiles = boardTiles;
+    }
 }

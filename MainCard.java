@@ -40,6 +40,7 @@ public final class MainCard extends JPanel {
     }
 
     public static void startGame(char playerToken, int playerTurn) {
+        Game.restart();
         if(RECENT_GAME != null) CARD_HOLDER.remove(MainCard.RECENT_GAME);
         RECENT_GAME = new Game(playerToken, playerTurn);
         CARD_HOLDER.add(RECENT_GAME, "GAME");
