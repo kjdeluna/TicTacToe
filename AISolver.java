@@ -17,7 +17,7 @@ public class AISolver {
                 actions.add(i);
             }
         }
-        System.out.println(actions.toString());
+        // System.out.println(actions.toString());
         return actions;
     }
     
@@ -30,7 +30,7 @@ public class AISolver {
     }
 
     public int maxValue(State s) {
-        System.out.println("solving4");
+        // System.out.println("solving4");
         int m = Constants.NEGATIVE_INFINITY;
         for(State branchingState : successors(s)) {
             int v = value(branchingState);
@@ -40,7 +40,7 @@ public class AISolver {
     }
 
     public int minValue(State s) {
-        System.out.println("solving3");
+        // System.out.println("solving3");
         int m = Constants.POSITIVE_INFINITY;
         for(State branchingState : successors(s)) {
             int v = value(branchingState);
@@ -58,20 +58,20 @@ public class AISolver {
     }
 
     public int value(State s) {
-        System.out.println("solving");
-        System.out.println("Turn: " + s.getTurn());
+        // System.out.println("solving");
+        // System.out.println("Turn: " + s.getTurn());
         if(s.getTurn() == token) {
             // If it is the AI's turn
             return maxValue(s);    
         }
         else if(Actions(s).size() == 0) return utility(s);
         else if(s.getTurn() != token) {
+            // If it is the player's turn
             return minValue(s);
         }
         return 0;
     }
     public int utility(State s) {
-        System.out.println("solving2");
         // AI wins
         if(s.getWinner() == token) return 1;
         // Player wins
@@ -84,13 +84,17 @@ public class AISolver {
         LinkedList<Integer> actions = Actions(s);
         LinkedList<State> children = new LinkedList<State>();
         for(int action : actions) {
-            children.add(Result(s, action));
+            State child = Result(s, action);
+            child.checkWin();
+            children.add(child);
         }
-        System.out.println(children.toString());
+        // System.out.println(children.toString());
         return children;
     }
 
     public void think(State s) {
-        System.out.println(maxValue(s));
+        System.out.println("x" + minValue(s));
+        System.out.println("y" + maxValue(s));
+        System.out.println("z" + value(s));
     }
 }
