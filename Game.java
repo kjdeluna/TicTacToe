@@ -75,8 +75,16 @@ public class Game extends JPanel {
         return BOARD;
     }
     public static boolean checkWin() {
-        currentState.printStatus();
-        System.out.println("checkWin: " + currentState.checkWin());
-        return currentState.checkWin();
+        // currentState.printStatus();
+        boolean end = currentState.checkWin();
+        if(end && currentState.getWinner() == PLAYER) {
+            JOptionPane.showMessageDialog(null, "Player wins!");
+        } else if(end && currentState.getWinner() == invert(PLAYER)) {
+            JOptionPane.showMessageDialog(null, "AI Wins!");
+        } else if(AISolver.Actions(currentState).size() == 0) {
+            JOptionPane.showMessageDialog(null, "Draw");
+        }
+        // System.out.println("checkWin: " + currentState.checkWin());
+        return end;
     }
 }

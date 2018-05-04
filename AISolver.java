@@ -10,7 +10,7 @@ public class AISolver {
         return this.token;
     }
     // Result
-    public LinkedList<Integer> Actions(State s) {
+    public static LinkedList<Integer> Actions(State s) {
         LinkedList<Integer> actions = new LinkedList<Integer>();
         char[] str = s.getBoardStringRepresentation().toCharArray();
         for(int i = 0; i < str.length; i++) {
@@ -31,26 +31,20 @@ public class AISolver {
     }
 
     public int maxValue(State s, int level) {
-        System.out.println("MAX");
-        System.out.println("LEVEL: " + level);
         int m = Constants.NEGATIVE_INFINITY;
         for(State branchingState : successors(s)) {
             int v = value(branchingState, level);
             m = max(v, m, level,branchingState);
         }
-        System.out.println("MAX RETURNED: " + m);
         return m;
     }
 
     public int minValue(State s, int level) {
-        System.out.println("MIN");
-        System.out.println("LEVEL: " + level);
         int m = Constants.POSITIVE_INFINITY;
         for(State branchingState : successors(s)) {
             int v = value(branchingState, level);
             m = min(v,m,level,branchingState);
         }
-        System.out.println("MIN RETURNED: " + m);
         return m;
     }
 
@@ -75,8 +69,6 @@ public class AISolver {
     }
 
     public int value(State s, int level) {
-        System.out.println("VALUE");
-        System.out.println("Turn: " + s.getTurn());
         if(Actions(s).size() == 0 || s.checkWin()) return utility(s);
         else if(s.getTurn() == token) {
             // If it is the AI's turn
@@ -88,23 +80,17 @@ public class AISolver {
         return 0;
     }
     public int utility(State s) {
-        System.out.println("UTILITY");
         s.checkWin();
         // AI wins
         if(s.getWinner() == token){
-            System.out.println("UTILITY RETURNED: 1");
             return 1;
         }
         // Player wins
         else if(s.getWinner() == Game.invert(token)){
-            System.out.println("UTILITY RETURNED: -1");
             return -1;
         }
         // Draw
-        else{
-            System.out.println("UTILITY RETURNED: 0");
-            return 0;
-        }
+        return 0;
     }
 
     public LinkedList<State> successors(State s) {
@@ -115,13 +101,11 @@ public class AISolver {
             child.checkWin();
             children.add(child);
         }
-        // System.out.println(children.toString());
         return children;
     }
 
     public void think(State s) {
-        System.out.println(value(s, 0));
-        System.out.println("AI's turn: " + this.stateToBeTaken.getRecentAction());
+        value(s, 0);
         s.getBoard().getBoardTiles()[this.stateToBeTaken.getRecentAction() / 3][this.stateToBeTaken.getRecentAction() % 3].aiAction(s.getTurn());
         this.stateToBeTaken = null;
     }
