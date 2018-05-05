@@ -1,21 +1,25 @@
+import java.util.LinkedList;
+
 public class State {
     private Board currentBoard;
     private int value;
     private char turn;
     private char winner;
-    private int recentAction;
+    private LinkedList<Integer> actions;
     public State(Board board, char turn) {
         this.currentBoard = board;
         this.value = Constants.NON_EXISTING_VALUE;
         this.turn = turn;
         this.winner = Constants.EMPTY;
     }
-    public State(Board board, char turn, int recentAction) {
+    public State(Board board, char turn, LinkedList<Integer> actions, int action) {
         this.currentBoard = board;
         this.value = Constants.NON_EXISTING_VALUE;
         this.turn = turn;
         this.winner = Constants.EMPTY;
-        this.recentAction = recentAction;
+        if(actions != null) this.actions = new LinkedList<Integer>(actions);
+        else this.actions = new LinkedList<Integer>();
+        this.actions.add(action);
     }
     public Board getBoard() {
         return this.currentBoard;
@@ -179,7 +183,7 @@ public class State {
         this.turn = Game.invert(this.turn);
     }
 
-    public int getRecentAction(){
-        return this.recentAction;
+    public LinkedList<Integer> getActions(){
+        return this.actions;
     }
 }

@@ -24,75 +24,71 @@ public class AISolver {
     
     public State Result(State s, int action) {
         // A result of another function will invert the turn
-        State newState = new State(Clone.cloneBoard(s.getBoard()), Game.invert(s.getTurn()), action);
+        State newState = new State(Clone.cloneBoard(s.getBoard()), Game.invert(s.getTurn()), s.getActions(), action);
         // 
         newState.getBoard().getBoardTiles()[action/Constants.ROWS][action%Constants.COLUMNS].setToken(s.getTurn());
         return newState;
     }
 
-    public int maxValue(State s, int level) {
-        int m = Constants.NEGATIVE_INFINITY;
+    public ActionValue maxValue(State s) {
+        ActionValue m = new ActionValue(0,Constants.NEGATIVE_INFINITY);
         for(State branchingState : successors(s)) {
-            int v = value(branchingState, level);
-            m = max(v, m, level,branchingState);
+            ActionValue v = value(branchingState);
+            // m = max(v, m,branchingState);
+            m = max(v,m,branchingState);
         }
-        return m;
+        return new ActionValue(m.getAction(),m.getValue());
     }
 
-    public int minValue(State s, int level) {
-        int m = Constants.POSITIVE_INFINITY;
+    public ActionValue minValue(State s) {
+        ActionValue m = new ActionValue(0, Constants.POSITIVE_INFINITY);
+        // int m = Constants.POSITIVE_INFINITY;
         for(State branchingState : successors(s)) {
-            int v = value(branchingState, level);
-            m = min(v,m,level,branchingState);
+            ActionValue v = value(branchingState);
+            // m = min(v,m,branchingState);
+            m = min(v, m, branchingState);
         }
-        return m;
+        return new ActionValue(m.getAction(),m.getValue());
     }
 
-    public int max(int v, int m, int level, State s) {
-        if(v > m){
-            if(level == 1){
-                this.stateToBeTaken = s;
-            }
-            return v;
+    public ActionValue max(ActionValue v, ActionValue m, State s) {
+        if(v.getValue() > m.getValue()){
+            return new ActionValue(v.getAction(),v.getValue());
         }
-        return m;
+        return new ActionValue(m.getAction(), m.getValue());
     }
 
-    public int min(int v, int m, int level, State s) {
-        if(v < m){
-            if(level == 1){
-                this.stateToBeTaken = s;
-            }
-            return v;
+    public ActionValue min(ActionValue v, ActionValue m, State s) {
+        if(v.getValue() < m.getValue()){
+            return new ActionValue(v.getAction(), v.getValue());
         }
-        return m;
+        return new ActionValue(m.getAction(), m.getValue());
     }
 
-    public int value(State s, int level) {
+    public ActionValue value(State s) {
         if(Actions(s).size() == 0 || s.checkWin()) return utility(s);
         else if(s.getTurn() == token) {
             // If it is the AI's turn
-            return maxValue(s, level + 1);    
+            return maxValue(s);    
         }
         else if(s.getTurn() != token) {
-            return minValue(s, level + 1);
+            return minValue(s);
         }
-        return 0;
+        return null;
     }
-    public int utility(State s) {
+    public ActionValue utility(State s) {
         s.checkWin();
         // AI wins
         if(s.getWinner() == token){
-            return 1;
+            return new ActionValue(s.getActions().get(0),1);
         }
         // Player wins
         else if(s.getWinner() == Game.invert(token)){
-            return -1;
+            return new ActionValue(s.getActions().get(0),-1);
         }
         // Draw
-        return 0;
+        return new ActionValue(s.getActions().get(0),0);
     }
-
     public LinkedList<State> successors(State s) {
         LinkedList<Integer> actions = Actions(s);
         LinkedList<State> children = new LinkedList<State>();
@@ -105,8 +101,8 @@ public class AISolver {
     }
 
     public void think(State s) {
-        value(s, 0);
-        s.getBoard().getBoardTiles()[this.stateToBeTaken.getRecentAction() / 3][this.stateToBeTaken.getRecentAction() % 3].aiAction(s.getTurn());
+        ActionValue av = value(s);
+        s.getBoard().getBoardTiles()[av.getAction() / 3][av.getAction() % 3].aiAction(s.getTurn());
         this.stateToBeTaken = null;
     }
 }
