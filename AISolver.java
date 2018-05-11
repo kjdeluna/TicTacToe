@@ -30,25 +30,35 @@ public class AISolver {
         return newState;
     }
 
-    public ActionValue maxValue(State s) {
-        ActionValue m = new ActionValue(0,Constants.NEGATIVE_INFINITY);
+    public ActionValue maxValue(State s, ActionValue alpha, ActionValue beta) {
+        ActionValue v = new ActionValue(0,Constants.NEGATIVE_INFINITY);
         for(State branchingState : successors(s)) {
-            ActionValue v = value(branchingState);
+            v = max(v, value(branchingState, alpha, beta), branchingState);
             // m = max(v, m,branchingState);
-            m = max(v,m,branchingState);
+            if( v.getValue() >= v.beta) {
+                v.alpha = alpha.getValue();
+                v.beta = beta.getValue();
+                return v;
+            }
+            alpha = max(alpha, v,s);
         }
-        return new ActionValue(m.getAction(),m.getValue());
+        return new ActionValue(v.getAction(),v.getValue());
     }
 
-    public ActionValue minValue(State s) {
-        ActionValue m = new ActionValue(0, Constants.POSITIVE_INFINITY);
+    public ActionValue minValue(State s, ActionValue alpha, ActionValue beta) {
+        ActionValue v = new ActionValue(0, Constants.POSITIVE_INFINITY);
         // int m = Constants.POSITIVE_INFINITY;
         for(State branchingState : successors(s)) {
-            ActionValue v = value(branchingState);
+            v = min(v,value(branchingState, alpha, beta), branchingState);
+            if(v.getValue() <= v.alpha){
+                v.alpha = alpha.getValue();
+                v.beta = beta.getValue();
+                return v;
+            }
+            beta = min(beta, v, s);
             // m = min(v,m,branchingState);
-            m = min(v, m, branchingState);
         }
-        return new ActionValue(m.getAction(),m.getValue());
+        return new ActionValue(v.getAction(),v.getValue());
     }
 
     public ActionValue max(ActionValue v, ActionValue m, State s) {
@@ -65,14 +75,14 @@ public class AISolver {
         return new ActionValue(m.getAction(), m.getValue());
     }
 
-    public ActionValue value(State s) {
+    public ActionValue value(State s, ActionValue alpha, ActionValue beta) {
         if(Actions(s).size() == 0 || s.checkWin()) return utility(s);
         else if(s.getTurn() == token) {
             // If it is the AI's turn
-            return maxValue(s);    
+            return maxValue(s, alpha, beta);    
         }
         else if(s.getTurn() != token) {
-            return minValue(s);
+            return minValue(s, alpha, beta);
         }
         return null;
     }
@@ -101,8 +111,7 @@ public class AISolver {
     }
 
     public void think(State s) {
-        ActionValue av = value(s);
+        ActionValue av = value(s, new ActionValue(0, Constants.NEGATIVE_INFINITY), new ActionValue(0,Constants.POSITIVE_INFINITY));
         s.getBoard().getBoardTiles()[av.getAction() / 3][av.getAction() % 3].aiAction(s.getTurn());
-        this.stateToBeTaken = null;
     }
 }
